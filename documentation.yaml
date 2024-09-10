@@ -1,0 +1,158 @@
+# openapi: 3.0.0
+# info:
+#   title: Utilisateur API
+#   description: API pour gérer une liste d'utilisateurs.
+#   version: 1.0.0
+
+# servers:
+#   - url: http://localhost:8080
+#     description: Serveur local
+
+# paths:
+#   /:
+#     get:
+#       summary: Page d'accueil.
+#       description: Afficher un message de bienvenue dans l'API.
+#       operationId: GetWelcomeMessage
+#       security: []
+#       responses:
+#         '200':
+#            description: Succès.
+#            content:
+#             application/json:
+#               schema:
+#                 type: string
+
+#   /users:
+#     get:
+#       summary: Liste des utilisateurs
+#       description: Récupère tous les utilisateurs.
+#       operationId: getAllUsers
+#       security: []
+#       responses:
+#         '200':
+#           description: Liste d'utilisateurs
+#           content:
+#             application/json:
+#               schema:
+#                 type: array
+#                 items:
+#                   type: object
+#                   properties:
+#                     name:
+#                       type: string
+#                       example: Doe
+#                     firstname:
+#                       type: string
+#                       example: John
+
+#     post: 
+#       summary: Crée un nouvel utilisateur
+#       description: Ajoute un nouvel utilisateur à la liste.
+#       operationId: createUser
+#       security: []
+#       requestBody:
+#         required: true
+#         content:
+#           application/json:
+#             schema:
+#               type: object
+#               properties:
+#                 name:
+#                   type: string
+#                   example: Baba
+#                 firstname:
+#                   type: string
+#                   example: Ali 
+#       responses:
+#         '201':
+#           description: Utilisateur crée
+#         '400':
+#           description: Données invalides ou manquantes
+#         '409':
+#           description: L'utilisateur existe déjà
+       
+
+
+#   /users/{id}:
+#     get:
+#       summary: Récupère un ID spécifique.
+#       description: Récupère un utilisateur par son ID.
+#       operationId: GetUserById
+#       parameters:
+#         - name: id 
+#           in: path
+#           required: true
+#           schema:
+#             type: integer
+#             description: ID de l'utilisateur
+#       responses:
+#         '201':
+#           description: Détails de l'utilisateur
+#           content:
+#             application/json:
+#               schema:
+#                 type: object
+#                 properties:
+#                   name:
+#                     type: string
+#                     example: Doe
+#                   firstname:
+#                     type: string
+#                     example: John
+
+#         '400':
+#           description: ID invalide (pas un entier)
+#         '404':
+#           description: Utilisateur non trouvé
+#       security: []
+
+#     put: 
+#       summary: Met à jour un utilisateur
+#       description: Modifie un utilisateur existant par son ID.
+#       operationId: updateUserById
+#       security: []
+#       parameters:
+#         - name: id
+#           in: path
+#           required: true
+#           schema:
+#             type: integer
+#             description: ID de l'utilisateur à mettre à jour
+#       requestBody:
+#         required: true
+#         content:
+#           application/json:
+#             schema:
+#               type: object
+#               properties:
+#                 name:
+#                   type: string
+#                   example: Hamilton
+#                 firstname:
+#                   type: string
+#                   example: Lewis
+#       responses:
+#         '201':
+#           description: Utilisateur mis a jour
+#         '404':
+#           description: Id non trouvé
+
+#     delete:
+#       summary: Supprime un utilisateur
+#       description: Supprime un utilisateur par son ID.
+#       operationId: deleteUserById
+#       security: []
+#       parameters:
+#         - name: id
+#           in: path
+#           required: true
+#           schema:
+#             type: integer
+#           description: ID de l'utilisateur à supprimer
+#       responses:
+#         '201':
+#           description: Utilisateur supprimé
+#         '404':
+#           description: Id non trouvé
+        
