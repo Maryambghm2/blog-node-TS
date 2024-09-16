@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="create-article.css">
+    <title>Créer un Article - MB's Blog</title>
+</head>
+
+<body>
+    <h2>Créer un Nouvel Article</h2>
+    <form id="create-article-form">
+        <input type="text" id="title" placeholder="Titre" required>
+        <textarea id="content" placeholder="Contenu de l'article" required></textarea>
+        <label for="picture" class="file-upload">
+            <span>Choisir une image</span>
+            <input type="file" id="picture" accept="image/*" required>
+        </label>
+        <input type="text" id="author" placeholder="Auteur (nom d'utilisateur ou ID)" required>
+        <button type="submit">Créer l'Article</button>
+    </form>
+    <script src="create-article.js"></script>
+</body>
+
+</html>

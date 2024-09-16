@@ -1,0 +1,36 @@
+body {
+    background: linear-gradient(135deg, #dbc3bd, #d1c8c1, #b1aef0);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#articles-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 400px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.articles {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+.align_infos {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    align-items: center;
+
+}
