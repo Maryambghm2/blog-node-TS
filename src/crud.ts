@@ -1,41 +1,46 @@
 // CRUD 
-const express = require("express");
+import express, { Request, Response } from 'express';
 
 // HACHAGE
-const argon2 = require("argon2");
+import argon2 from 'argon2'
 
-const cors = require('cors');
+import cors from 'cors';
 // TRAITEMENT DU PARSER 
-const bodyParser = require("body-parser");
+import bodyParser from 'body-parser';
 
-const query = require("./db.js");
+import query from './db';
+
 const app = express();
 const port = 8080;
 
-
 // middleware bodyparser ;Dire au système qu'il s'agit d'un json
 app.use(bodyParser.json());
+
 
 // POUR RECUPERER IMAGE 
 app.use(cors());
 app.use('/pic', express.static('public/pic'));
 
+
+
+// CHEMINS : 
+
 // CHEMIN ROOT DE BASE ;RACINE 
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
     res.send("Bienvenue sur l'API Blog !");
 });
 
 // CHEMIN  USERS 
 // get pour users
-app.get('/users', async (req, res) => {
+app.get('/users', async (req: Request, res: Response) => {
     
     try {
         // Param requete username 
         const { username } = req.query;
 
         // REQUETE SQL DE BASE 
-        let queryReq = 'SELECT * FROM users';
-        let queryParams = [];
+        let queryReq: string = 'SELECT * FROM users';
+        let queryParams: any[] = [];
 
 
         if (username) {
@@ -56,9 +61,11 @@ app.get('/users', async (req, res) => {
 
 
 // Get pour un user spécifique PAR ID
-app.get('/users/:id', async (req, res) => {
+app.get('/users/:id', async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
-    console.log('id:', id);
+    // console.log('id:', id);
+
+
     // SI valeur 'id' invalide 
     if (isNaN(id)) {
         return res.status(400).send("L'id doit être un entier");
@@ -79,8 +86,8 @@ app.get('/users/:id', async (req, res) => {
 });
 
 // Get pour récuperer les articles d'un user spécifique
-app.get('/articles/users/:id', async (req, res) => {
-    const id = req.params.id;
+app.get('/articles/users/:id', async (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
 
     if (isNaN(id)) {
         return res.status(400).send("L'ID de l'utilisateur doit être un entier valide.");
@@ -106,7 +113,7 @@ app.get('/articles/users/:id', async (req, res) => {
 });
 
 // POST USERS INSCRIPTION
-app.post('/users/register', async (req, res) => {
+app.post('/users/register', async (req: Request, res: Response) => {
     const { username, mail, password } = req.body
 
 
@@ -117,8 +124,9 @@ app.post('/users/register', async (req, res) => {
 
     // USERNAME :
     // VERIF USERNAME UTILISER
-    const usernameCheck = await query('SELECT username FROM users WHERE username = $1', [username]);
-    if (usernameCheck.rowCount > 0) {
+    try {
+        const usernameCheck = await query('SELECT username FROM users WHERE username = $1', [username]);
+        if (usernameCheck.rowCount !== null && usernameCheck.rowCount > 0) {
         return res.status(400).send("Le nom d'utilisateur est déjà pris, veuillez en choisir un autre.");
     }
     // VERIF LONGUEUR USERNAME 
@@ -149,11 +157,11 @@ app.post('/users/register', async (req, res) => {
     }
     // VERIF MAIL UTILISER
     const mailCheck = await query('SELECT mail FROM users WHERE mail = $1', [mail]);
-    if (mailCheck.rowCount > 0) {
+    if (mailCheck.rowCount !== null && mailCheck.rowCount > 0) {
         return res.status(400).send("L'email est déja utilisé, veuillez en insérer un autre.")
     }
 
-    try {
+    
         const hashedPassword = await argon2.hash(password);
 
         const result = await query('INSERT INTO users (username, mail, password) VALUES ($1, $2, $3) RETURNING *', [username, mail, hashedPassword]);
@@ -166,8 +174,9 @@ app.post('/users/register', async (req, res) => {
 });
 
 // ROUTE CONNEXION 
-app.post('/users/login', async (req, res) => {
+app.post('/users/login', async (req: Request, res: Response) => {
     const { mail, password } = req.body
+
     try {
         // RECHERCHE USER PAR EMAIL 
         const result = await query('SELECT * FROM users WHERE mail = $1', [mail]);
@@ -209,8 +218,9 @@ app.post('/users/login', async (req, res) => {
     }
 });
 
-// CHEMIN ARTICLES 
-app.get('/articles', async (req, res) => {
+// CHEMIN POUR TOUT LES ARTICLES 
+app.get('/articles', async (req: Request, res: Response) => {
+
     try {
         const reqQuery = `SELECT a.id, a.title, a.content, a.created_at, a.picture, 
         u.username AS author
@@ -227,8 +237,8 @@ app.get('/articles', async (req, res) => {
     }
 });
 
-// CHEMIN ARTICLE SPECIFIQUE
-app.get('/articles/:id', async (req, res) => {
+// CHEMIN ARTICLE SPECIFIQUE PAR ID 
+app.get('/articles/:id', async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
 
     // SI valeur 'id' invalide 
@@ -261,12 +271,13 @@ app.get('/articles/:id', async (req, res) => {
 
 
 // POST pour crée un article 
-app.post('/articles', async (req, res) => {
+app.post('/articles', async (req: Request, res: Response) => {
     const { title, content, picture, author } = req.body;
 
     if (!title || !content || !author) {
         return res.status(400).send("Tous les champs (titre, contenu, auteur) sont obligatoires.")
     }
+    
     try {
         let authorId = parseInt(author);
         if (isNaN(authorId)) {

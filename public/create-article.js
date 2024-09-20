@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Récupérer les valeurs du formulaire
             const title = document.getElementById('title').value;
             const content = document.getElementById('content').value;
-            const picture = document.getElementById('picture').value;
+            const picture = document.getElementById('picture').files[0].name;
             const author = document.getElementById('author').value;
 
             try {

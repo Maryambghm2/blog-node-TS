@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "target": "ES6", // Version JavaScript cible : ES6 (ECMAScript 2015)
+        "module": "CommonJS", // Format de module utilisé, idéal pour Node.js
+        "esModuleInterop": true, // Permet l'interopérabilité entre les modules ES6 et CommonJS
+        "forceConsistentCasingInFileNames": true, // Imposer la cohérence de la casse dans les noms de fichiers
+        "strict": true, // Activer toutes les vérifications strictes de TypeScript
+        "skipLibCheck": true, // Ignorer la vérification des types dans les bibliothèques tierces (accélère la compilation)
+        "outDir": "./dist", // Dossier de sortie pour les fichiers compilés (JavaScript)
+        "rootDir": "./src" // Dossier contenant les fichiers source TypeScript
+    },
+    "include": [
+        "src/**/*" // Inclure tous les fichiers TypeScript du dossier src et ses sous-dossiers
+    ],
+    "exclude": [
+        "node-modules", // Exclure le dossier node_modules (dépendances) de la compilation
+        "note"
+    ]
+}
